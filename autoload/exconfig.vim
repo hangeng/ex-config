@@ -484,6 +484,9 @@ function exconfig#gen_sh_update_ctags(path)
 
     " get ctags options
     let ctags_optioins = '--fields=+iaS --extra=+q'
+    " let ctags_optioins = '--c-kinds=+p --c++-kinds=+p --fields=+iaS --fields=+l --extra=+q --languages=c,c++,c#,javascript,java,python,lua,vim,matlab,make,sh,c, --langmap=c:+.C,c++:+.H,c++:+.inl,c++:+.ipp,javascript:+.as,python:+.pyw,lua:+.wlua,c:+.hlsl,c:+.vsh,c:+.psh,c:+.fx,c:+.fxh,c:+.cg,c:+.shd,c:+.glsl'
+    let ctags_optioins = '--c-kinds=+p --fields=+l --languages=c,c++,python, --langmap=c:+.C,c:+.h,c++:+.inl'
+    
 
     " generate scripts
     if ex#os#is('windows')
@@ -519,11 +522,12 @@ function exconfig#gen_sh_update_ctags(path)
             let scripts = [
                         \ '#!/bin/bash'                                ,
                         \ 'export DEST="'.a:path.'"'                   ,
+                        \ 'export CTAGS_FILE_DEST="${DEST}/.."'       ,
                         \ 'export TOOLS="'.expand(g:ex_tools_path).'"' ,
                         \ 'export CTAGS_CMD="'.ctags_cmd.'"'           ,
                         \ 'export OPTIONS="'.ctags_optioins.'"'        ,
                         \ 'export TMP="${DEST}/_tags"'                 ,
-                        \ 'export TARGET="${DEST}/tags"'               ,
+                        \ 'export TARGET="${CTAGS_FILE_DEST}/tags"'    ,
                         \ 'sh ${TOOLS}/shell/bash/update-tags.sh'      ,
                         \ ]
         endif
